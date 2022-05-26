@@ -1,50 +1,68 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import logo from '../img/Logo.png';
-import Cadastrar from "./Cadastrar";
+
 
 function Cadastro() {
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const [nome, setNome] = useState('');
     const [foto, setFoto] = useState('');
 
+    function cadastrar() {
+
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
+        const promise = axios.post(URL,
+            {
+                email: { email },
+                name: { nome },
+                image: { foto },
+                password: { senha }
+            });
+        console.log("esperando a promise")
+
+        promise.then(response => {navigate('/')});
+        promise.catch(erro => console.log(erro.response.statusText))
+    }
 
     return (
         <Container>
             <Logo src={logo} alt='logo' />
-                <Form>
-                    <input type='text'
-                        placeholder="email"
-                        value={email}
-                        required
-                        onChange={(event) => setEmail(event.target.value)} />
-                    <input type='text'
-                        placeholder="senha"
-                        value={senha}
-                        required
-                        onChange={(event) => setSenha(event.target.value)} />
-                    <input type='text'
-                        placeholder="nome"
-                        value={nome}
-                        required
-                        onChange={(event) => setNome(event.target.value)} />
-                    <input type='text'
-                        placeholder="foto"
-                        value={foto}
-                        required
-                        onChange={(event) => setFoto(event.target.value)} />
-                    <button onClick={() => Cadastrar( email, senha, nome, foto )}>
-                        Entrar
-                    </button>
-                </Form>
-                <Link to="/">
-                    <Login>
-                        Já tem uma conta? Faça login!
-                    </Login>
-                </Link>
+            <Form onSubmit={cadastrar(email, senha, nome, foto)}>
+                <input type='email'
+                    placeholder="email"
+                    value={email}
+                    required
+                    onChange={(event) => setEmail(event.target.value)} />
+                <input type='password'
+                    placeholder="senha"
+                    value={senha}
+                    required
+                    onChange={(event) => setSenha(event.target.value)} />
+                <input type='text'
+                    placeholder="nome"
+                    value={nome}
+                    required
+                    onChange={(event) => setNome(event.target.value)} />
+                <input type='url'
+                    placeholder="foto"
+                    value={foto}
+                    required
+                    onChange={(event) => setFoto(event.target.value)} />
+                <button type="submit">
+                    Entrar
+                </button>
+            </Form>
+            <Link to="/">
+                <Login>
+                    Já tem uma conta? Faça login!
+                </Login>
+            </Link>
 
         </Container>
     );
@@ -77,7 +95,6 @@ const Form = styled.form`
         height: 45px;
         width: 302px;
         margin-bottom: 6px;
-        color: #DBDBDB;
         font-size: 20px;
     }
 

@@ -1,26 +1,40 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import styled from "styled-components";
 import logo from '../img/Logo.png';
 
 function Login() {
+
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+
+    function fazerLogin( email, senha ) {
+        console.log("oie");
+    }
+
     return (
         <Container>
             <Logo src={logo} alt='logo' />
             <Form>
-                <input type='text'
-                    placeholder="email" />
-                <input type='text'
-                    placeholder="senha" />
-                <button>
+                <input type='email'
+                    placeholder="email"
+                    value={email}
+                    required
+                    onChange={(event) => setEmail(event.target.value)} />
+                <input type='password'
+                    placeholder="senha"
+                    value={senha}
+                    required
+                    onChange={(event) => setSenha(event.target.value)} />
+                <button onClick={() => fazerLogin( email, senha )}>
                     Entrar
                 </button>
-                <Link to="/cadastro">
-                    <Cadastro>
-                        Não tem uma conta? Cadastre-se!
-                    </Cadastro>
-                </Link>
-
             </Form>
+            <Link to="/cadastro">
+                <Cadastro>
+                    Não tem uma conta? Cadastre-se!
+                </Cadastro>
+            </Link>
         </Container>
     );
 }
@@ -40,7 +54,7 @@ const Logo = styled.img`
     margin-bottom: 32px;
 `
 
-const Form = styled.div`
+const Form = styled.form`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -52,7 +66,6 @@ const Form = styled.div`
         height: 45px;
         width: 302px;
         margin-bottom: 6px;
-        color: #DBDBDB;
         font-size: 20px;
     }
 
